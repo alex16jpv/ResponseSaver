@@ -5,12 +5,13 @@ config();
 
 const API_URL = process.env.API_URL;
 
-const start = async ({ timeout, pageLimit, directory } = {}) => {
+async function responseSaver({ timeout, pageLimit, directory } = {}) {
   let curPage = 1;
   let isFinished = false;
   let url = API_URL;
   const errors = [];
 
+  // TODO: stop when is constantly failing
   while (!isFinished) {
     try {
       url = setPageToUrl(url, curPage);
@@ -35,10 +36,6 @@ const start = async ({ timeout, pageLimit, directory } = {}) => {
       curPage += 1;
     }
   }
-};
+}
 
-start({
-  timeout: process.env.TIMEOUT && Number(process.env.TIMEOUT),
-  pageLimit: process.env.PAGE_LIMIT && Number(process.env.PAGE_LIMIT),
-  directory: process.env.DIR ?? "data",
-});
+export default responseSaver;
